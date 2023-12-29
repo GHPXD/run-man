@@ -1,0 +1,149 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Minecraft', sans-serif;
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 35px;
+    color: white;
+    z-index: 1;
+    text-shadow: 2px 2px orange;
+}
+
+#game-over-dialog {
+    position: absolute;
+    max-width: 30%;
+    width: 50%;
+    height: 25%;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    text-align: center;
+    border: 2px solid black;
+    z-index: 2;
+    background-image: url('../img/brick.png'); 
+    background-size: cover;
+}
+
+#final-score {
+    color: black;
+    font-size: 30px;
+    margin-top: 20px;
+}
+
+#retry-button {
+    background: none;
+    border: none;
+    font-size: 30px;
+    padding: 30px;
+}
+
+.game-board {
+    width: 100%;
+    height: 500px;
+    border-bottom: 15px solid green;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(blue,#87CEEB, #87CEEB, #87CEEB, #E0F6FF);
+}
+
+.mario {
+    width: 150px;
+    position: absolute;
+    bottom: 0;
+}
+
+.game-over {
+    width: 80px;
+    margin-left: 5px;
+}
+
+.jump {
+    animation: jump 500ms ease-out;
+}
+
+.pipe {
+    position: absolute;
+    bottom: 0;
+    width: 100px;
+    animation: pipe-animation 1.5s infinite linear;
+}
+
+.cloud {
+    width: 400px;
+    position: absolute;
+}
+
+.cloud1 {
+    animation: cloud-animation 20s linear infinite;
+}
+
+.cloud2 {
+    animation: cloud-animation 20s linear infinite;
+    animation-delay: 10s;
+    animation-fill-mode: backwards;
+}
+
+@keyframes jump {
+    0% {
+        bottom: 0;
+    }
+
+    30% {
+        bottom: 30%;
+    }
+
+    40% {
+        bottom: 35%;
+    }
+
+    50% {
+        bottom: 35%;
+    }
+
+    60% {
+        bottom: 35%;
+    }
+    
+    70% {
+        bottom: 33%;
+    }
+
+    80% {
+        bottom: 27%;
+    }
+
+    100% {
+        bottom: 0;
+    }
+    
+}
+
+@keyframes pipe-animation {
+    from {
+        right: -80px;
+    }
+
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes cloud-animation {
+    from {
+        right: -550px;
+    }
+
+    to {
+        right: 100%;
+    }
+    
+}

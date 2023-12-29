@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Data/CSS/style.css">
+
+    <title>Mario Run</title>
+</head>
+
+<style>
+    @import url('https://fonts.cdnfonts.com/css/minecraft-4');
+</style>
+
+<body>
+
+    <div id="score">0000</div>
+
+    <div id="game-over-dialog" style="display: none;">
+        <h1>Game Over</h1>
+        <p id="final-score"></p>
+        <button id="retry-button">
+            <img src="./Data/img/retry.png" alt="Retry" style="width: 100%; height: 100%;">
+        </button>
+        
+    </div>    
+
+    <div class="game-board">
+        <img src="./Data/img/mario.gif" class="mario" alt="Mario">
+        <img src="./Data/img/pipe.png" class="pipe" alt="Pipe">
+        <img src="./Data/img/clouds.png" class="cloud cloud1" alt="Clouds">
+        <img src="./Data/img/clouds.png" class="cloud cloud2" alt="Clouds">
+
+    </div>
+    
+</body>
+<script src="./Data/Scripts/script.js"></script>
+</html>
