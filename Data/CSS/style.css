@@ -18,10 +18,10 @@
 
 #game-over-dialog {
     position: absolute;
-    max-width: 30%;
+    max-width: 50%;
     width: 50%;
-    height: 30%;
-    top: 20%;
+    height:50%;
+    top: 27%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 20px;
@@ -35,7 +35,7 @@
 #final-score {
     color: black;
     font-size: 30px;
-    margin-top: 20px;
+    margin-top: 20%;
 }
 
 #retry-button {
