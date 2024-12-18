@@ -1,32 +1,79 @@
-// Variáveis de pontuação
-let score = 0;
-const scoreElement = document.getElementById('score');
-
-// Elementos do game over
+/* script.js - complete replacement */
+// Game elements
+const mario = document.querySelector('.mario');
+const pipe = document.querySelector('.pipe');
+const startScreen = document.getElementById('start-screen');
+const startButton = document.getElementById('start-button');
 const gameOverDialog = document.getElementById('game-over-dialog');
 const finalScoreElement = document.getElementById('final-score');
 const retryButton = document.getElementById('retry-button');
-
-// Elementos do jogo
-const mario = document.querySelector('.mario');
-const pipe = document.querySelector('.pipe');
-
-// Controle de tela cheia
+const scoreElement = document.getElementById('score');
 const fullscreenButton = document.getElementById('fullscreen-button');
 
-// Função para atualizar a pontuação
-const updateScore = () => {
-    score++;
-    scoreElement.textContent = String(score).padStart(4, '0');
+// Game state
+let score = 0;
+let isGameRunning = false;
+let scoreInterval;
+let gameLoop;
+let isFullscreen = false;
+
+// Initialize game state
+function initializeGame() {
+    score = 0;
+    scoreElement.textContent = '0000';
+    mario.src = './Data/img/mario.gif';
+    mario.classList.remove('game-over');
+    pipe.style.animation = '';
+    pipe.style.left = '';
+    mario.style.bottom = '0';
+    mario.style.animation = '';
+    gameOverDialog.style.display = 'none';
 }
 
-// Intervalo de atualização da pontuação
-const scoreInterval = setInterval(updateScore, 300);
+// Start game function
+function startGame() {
+    initializeGame();
+    startScreen.style.display = 'none';
+    isGameRunning = true;
+    
+    // Start score counter
+    scoreInterval = setInterval(() => {
+        score++;
+        scoreElement.textContent = String(score).padStart(4, '0');
+    }, 300);
 
-// Função de pulo
-const jump = () => {
-    // Previne múltiplos pulos durante a animação
-    if (!mario.classList.contains('jump')) {
+    // Start game loop
+    gameLoop = setInterval(() => {
+        const pipePosition = pipe.offsetLeft;
+        const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
+
+        if (pipePosition <= 93 && pipePosition > 0 && marioPosition < 100) {
+            gameOver();
+        }
+    }, 10);
+}
+
+// Game over function
+function gameOver() {
+    isGameRunning = false;
+    clearInterval(gameLoop);
+    clearInterval(scoreInterval);
+    
+    pipe.style.animation = 'none';
+    pipe.style.left = `${pipe.offsetLeft}px`;
+    
+    mario.style.animation = 'none';
+    mario.style.bottom = `${window.getComputedStyle(mario).bottom}`;
+    mario.src = './Data/img/game-over.png';
+    mario.classList.add('game-over');
+    
+    finalScoreElement.textContent = `Score: ${String(score).padStart(4, '0')}`;
+    gameOverDialog.style.display = 'block';
+}
+
+// Jump function
+function jump() {
+    if (isGameRunning && !mario.classList.contains('jump')) {
         mario.classList.add('jump');
         setTimeout(() => {
             mario.classList.remove('jump');
@@ -34,73 +81,73 @@ const jump = () => {
     }
 }
 
-// Função para alternar tela cheia
-const toggleFullscreen = () => {
+// Fullscreen handling
+function toggleFullscreen() {
     if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch((e) => {
-            console.log(`Error attempting to enable fullscreen: ${e.message}`);
+        document.documentElement.requestFullscreen().catch(err => {
+            console.log(`Error attempting to enable fullscreen: ${err.message}`);
         });
+        isFullscreen = true;
     } else {
         if (document.exitFullscreen) {
             document.exitFullscreen();
+            isFullscreen = false;
         }
     }
 }
 
-// Loop principal do jogo
-const loop = setInterval(() => {
-    const pipePosition = pipe.offsetLeft;
-    const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
-
-    // Colisão
-    if (pipePosition <= 93 && pipePosition > 0 && marioPosition < 100) {
-        pipe.style.animation = 'none';
-        pipe.style.left = `${pipePosition}px`;
-    
-        mario.style.animation = 'none';
-        mario.style.bottom = `${marioPosition}px`;
-    
-        mario.src = './Data/img/game-over.png';
-        mario.classList.add('game-over');
-    
-        clearInterval(loop);
-        clearInterval(scoreInterval);
-
-        finalScoreElement.textContent = `Score: ${String(score).padStart(4, '0')}`;
-        gameOverDialog.style.display = 'block';
+// Event listeners
+startButton.addEventListener('click', () => {
+    startGame();
+    if (!isFullscreen && window.matchMedia("(max-width: 768px)").matches) {
+        toggleFullscreen();
     }
-}, 10);
+});
 
-// Event Listeners
 retryButton.addEventListener('click', () => {
-    location.reload();
+    initializeGame();
+    startGame();
 });
 
-// Controles para desktop - agora qualquer tecla faz pular
 document.addEventListener('keydown', (event) => {
-    event.preventDefault(); // Previne scroll da página
+    event.preventDefault();
     jump();
 });
 
-// Controles para mobile
 document.addEventListener('touchstart', (event) => {
-    event.preventDefault(); // Previne comportamentos padrão do touch
+    event.preventDefault();
     jump();
 });
 
-// Listener para botão de tela cheia
 fullscreenButton.addEventListener('click', toggleFullscreen);
 
-// Detectar mudanças de orientação
-window.addEventListener('orientationchange', () => {
-    if (window.orientation === 0) { // Retrato
-        document.getElementById('orientation-message').style.display = 'flex';
-    } else { // Paisagem
-        document.getElementById('orientation-message').style.display = 'none';
+// Orientation handling
+function checkOrientation() {
+    const orientationMessage = document.getElementById('orientation-message');
+    if (window.matchMedia("(orientation: portrait)").matches) {
+        orientationMessage.style.display = 'flex';
+        if (isGameRunning) {
+            clearInterval(gameLoop);
+            clearInterval(scoreInterval);
+            isGameRunning = false;
+        }
+    } else {
+        orientationMessage.style.display = 'none';
+        if (!isGameRunning && startScreen.style.display === 'none') {
+            startGame();
+        }
     }
-});
+}
 
-// Verificar orientação inicial
-if (window.matchMedia("(orientation: portrait)").matches) {
-    document.getElementById('orientation-message').style.display = 'flex';
+window.addEventListener('orientationchange', checkOrientation);
+window.addEventListener('resize', checkOrientation);
+
+// Initial check
+checkOrientation();
+
+// Show start screen only if on desktop or in landscape
+if (window.matchMedia("(orientation: landscape)").matches || !window.matchMedia("(max-width: 768px)").matches) {
+    startScreen.style.display = 'flex';
+} else {
+    startScreen.style.display = 'none';
 }
