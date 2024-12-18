@@ -86,9 +86,9 @@ function jump() {
 }
 
 // Fullscreen handling
-function toggleFullscreen() {
+async function toggleFullscreen() {
     if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
+        await document.documentElement.requestFullscreen().catch(err => {
             console.log(`Error attempting to enable fullscreen: ${err.message}`);
         });
         isFullscreen = true;
@@ -100,11 +100,18 @@ function toggleFullscreen() {
     }
 }
 
+// Função para verificar se é dispositivo móvel
+function isMobile() {
+    return window.matchMedia("(max-width: 768px)").matches;
+}
+
 // Event listeners
-startButton.addEventListener('click', () => {
-    startGame();
-    if (!isFullscreen && window.matchMedia("(max-width: 768px)").matches) {
-        toggleFullscreen();
+startButton.addEventListener('click', async () => {
+    if (isMobile()) {
+        await toggleFullscreen();  // Aguarda a tela cheia ser ativada
+        setTimeout(startGame, 300); // Pequeno delay para garantir que a tela cheia foi ativada
+    } else {
+        startGame();
     }
 });
 
