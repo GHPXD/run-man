@@ -118,7 +118,7 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-// Touch controls - modificado para evitar problemas no mobile
+// Touch controls
 document.addEventListener('touchstart', (event) => {
     if (isGameRunning && !mario.classList.contains('jump')) {
         event.preventDefault();
