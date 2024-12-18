@@ -43,16 +43,18 @@ function startGame() {
 
     // Start game loop
     gameLoop = setInterval(() => {
-        if (!isGameRunning) return;
-        
-        const pipePosition = pipe.offsetLeft;
-        const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
+    if (!isGameRunning) return;
+    
+    const pipePosition = pipe.offsetLeft;
+    const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
+    
+    // Ajusta a área de colisão para mobile
+    const collisionThreshold = window.matchMedia("(max-width: 768px)").matches ? 80 : 93;
 
-        if (pipePosition <= 93 && pipePosition > 0 && marioPosition < 100) {
-            gameOver();
-        }
-    }, 10);
-}
+    if (pipePosition <= collisionThreshold && pipePosition > 0 && marioPosition < 100) {
+        gameOver();
+    }
+}, 10);
 
 // Game over function
 function gameOver() {
