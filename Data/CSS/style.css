@@ -1,9 +1,52 @@
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Minecraft', sans-serif;
+}
+
+.orientation-warning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.orientation-warning img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.fullscreen-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}
+
+.fullscreen-btn img {
+    width: 100%;
+    height: 100%;
 }
 
 #score {
@@ -18,10 +61,10 @@
 
 #game-over-dialog {
     position: absolute;
-    max-width: 50%;
-    width: 50%;
-    height:50%;
-    top: 27%;
+    max-width: 400px;
+    width: 90%;
+    height: auto;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 20px;
@@ -35,19 +78,22 @@
 #final-score {
     color: black;
     font-size: 30px;
-    margin-top: 20%;
+    margin: 20px 0;
 }
 
 #retry-button {
     background: none;
     border: none;
     font-size: 30px;
-    padding: 30px;
+    padding: 15px;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
 }
 
 .game-board {
     width: 100%;
-    height: 500px;
+    height: 100vh;
     border-bottom: 15px solid green;
     margin: 0 auto;
     position: relative;
@@ -56,30 +102,30 @@
 }
 
 .mario {
-    width: 150px;
+    height: 20vh;
+    width: auto;
     position: absolute;
     bottom: 0;
 }
 
 .game-over {
-    width: 80px;
+    width: auto;
+    height: 15vh;
     margin-left: 5px;
-}
-
-.jump {
-    animation: jump 500ms ease-out;
 }
 
 .pipe {
     position: absolute;
     bottom: 0;
-    width: 100px;
+    height: 15vh;
+    width: auto;
     animation: pipe-animation 1.5s infinite linear;
 }
 
 .cloud {
-    width: 400px;
+    width: 40%;
     position: absolute;
+    top: 10%;
 }
 
 .cloud1 {
@@ -92,46 +138,51 @@
     animation-fill-mode: backwards;
 }
 
+@media (orientation: portrait) {
+    .orientation-warning {
+        display: flex;
+    }
+    .game-board {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    #score {
+        font-size: 24px;
+    }
+    
+    .mario {
+        height: 15vh;
+    }
+    
+    .pipe {
+        height: 12vh;
+    }
+}
+
 @keyframes jump {
     0% {
         bottom: 0;
     }
-
-    30% {
-        bottom: 30%;
-    }
-
     40% {
-        bottom: 35%;
+        bottom: 35vh;
     }
-
     50% {
-        bottom: 35%;
+        bottom: 35vh;
     }
-
     60% {
-        bottom: 35%;
+        bottom: 35vh;
     }
-    
-    70% {
-        bottom: 33%;
-    }
-
-    80% {
-        bottom: 27%;
-    }
-
     100% {
         bottom: 0;
     }
-    
 }
 
 @keyframes pipe-animation {
     from {
         right: -80px;
     }
-
     to {
         right: 100%;
     }
@@ -141,9 +192,7 @@
     from {
         right: -550px;
     }
-
     to {
         right: 100%;
     }
-    
 }
