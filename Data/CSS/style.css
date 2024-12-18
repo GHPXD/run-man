@@ -191,7 +191,7 @@
     }
     
     .pipe {
-        height: 12vh;
+        animation: pipe-animation 2.2s infinite linear; /* Aumentei para 2.2 segundos no mobile */
     }
 }
 
