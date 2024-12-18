@@ -1,4 +1,3 @@
-/* script.js - complete replacement */
 // Game elements
 const mario = document.querySelector('.mario');
 const pipe = document.querySelector('.pipe');
@@ -44,6 +43,8 @@ function startGame() {
 
     // Start game loop
     gameLoop = setInterval(() => {
+        if (!isGameRunning) return;
+        
         const pipePosition = pipe.offsetLeft;
         const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
 
@@ -109,15 +110,21 @@ retryButton.addEventListener('click', () => {
     startGame();
 });
 
+// Keyboard controls
 document.addEventListener('keydown', (event) => {
-    event.preventDefault();
-    jump();
+    if (isGameRunning) {
+        event.preventDefault();
+        jump();
+    }
 });
 
+// Touch controls - modificado para evitar problemas no mobile
 document.addEventListener('touchstart', (event) => {
-    event.preventDefault();
-    jump();
-});
+    if (isGameRunning && !mario.classList.contains('jump')) {
+        event.preventDefault();
+        jump();
+    }
+}, { passive: false });
 
 fullscreenButton.addEventListener('click', toggleFullscreen);
 
