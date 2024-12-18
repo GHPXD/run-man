@@ -29,6 +29,13 @@ function initializeGame() {
     gameOverDialog.style.display = 'none';
 }
 
+// Função para calcular a área de colisão
+function calculateCollisionArea() {
+    const pipeWidth = pipe.offsetWidth;
+    const marioWidth = mario.offsetWidth;
+    return Math.min(pipeWidth + marioWidth / 2, 93); // Limita a área máxima de colisão
+}
+
 // Start game function
 function startGame() {
     initializeGame();
@@ -47,11 +54,16 @@ function startGame() {
         
         const pipePosition = pipe.offsetLeft;
         const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
+        const marioHeight = mario.offsetHeight;
+        const pipeHeight = pipe.offsetHeight;
         
-        // Ajusta a área de colisão para mobile
-        const collisionThreshold = window.matchMedia("(max-width: 768px)").matches ? 80 : 93;
+        // Calcula a área de colisão dinamicamente
+        const collisionThreshold = calculateCollisionArea();
+        
+        // Ajusta a altura da colisão com base no tamanho do cano
+        const heightThreshold = (pipeHeight * 0.7); // 70% da altura do cano
 
-        if (pipePosition <= collisionThreshold && pipePosition > 0 && marioPosition < 100) {
+        if (pipePosition <= collisionThreshold && pipePosition > 0 && marioPosition < heightThreshold) {
             gameOver();
         }
     }, 10);
@@ -108,8 +120,8 @@ function isMobile() {
 // Event listeners
 startButton.addEventListener('click', async () => {
     if (isMobile()) {
-        await toggleFullscreen();  // Aguarda a tela cheia ser ativada
-        setTimeout(startGame, 300); // Pequeno delay para garantir que a tela cheia foi ativada
+        await toggleFullscreen();
+        setTimeout(startGame, 300);
     } else {
         startGame();
     }
