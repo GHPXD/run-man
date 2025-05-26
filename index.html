@@ -1,31 +1,38 @@
-Updated Mario Game Files
-
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./Data/CSS/style.css">
-    <title>Mario Run</title>
+    <link rel="stylesheet" href="./data/styles/style.css">
+    <title>Jump Man Run</title>
 </head>
-
-<style>
-    @import url('https://fonts.cdnfonts.com/css/minecraft-4');
-</style>
 
 <body>
     <div id="orientation-message" class="orientation-warning">
-        <img src="./Data/img/rotate.png" alt="Rotate device">
+        <img src="./data/images/rotate.png" alt="Girar dispositivo">
         <p>Por favor, gire seu dispositivo para jogar</p>
     </div>
 
     <div id="start-screen" class="start-screen">
-        <button id="start-button" class="start-button">START</button>
+        <div class="high-score-display">
+            <p id="high-score-text">Recorde: <span id="high-score-value">0000</span></p>
+        </div>
+        <button id="start-button" class="start-button" 
+                aria-label="Iniciar jogo" 
+                role="button">START</button>
     </div>
 
-    <div id="fullscreen-button" class="fullscreen-btn">
-        <img src="./Data/img/fullscreen.png" alt="Fullscreen">
+    <div id="pause-overlay" class="pause-overlay" style="display: none;">
+        <div class="pause-content">
+            <h2>PAUSADO</h2>
+            <p>Pressione ESC ou toque para continuar</p>
+        </div>
+    </div>
+
+    <div id="fullscreen-button" class="fullscreen-btn" 
+         aria-label="Tela cheia" 
+         role="button">
+        <img src="./data/images/fullscreen.png" alt="Tela cheia">
     </div>
 
     <div id="score">0000</div>
@@ -33,18 +40,37 @@ Updated Mario Game Files
     <div id="game-over-dialog" style="display: none;">
         <h1>Game Over</h1>
         <p id="final-score"></p>
-        <button id="retry-button">
-            <img src="./Data/img/retry.png" alt="Retry" style="width: 100%; height: 100%;">
+        <p id="new-record" style="display: none; color: gold; font-weight: bold;">🏆 NOVO RECORDE! 🏆</p>
+        <button id="retry-button" 
+                aria-label="Tentar novamente" 
+                role="button">
+            <img src="./data/images/retry.png" alt="Tentar novamente" style="width: 100%; height: 100%;">
         </button>
     </div>    
 
     <div class="game-board">
-        <img src="./Data/img/mario.gif" class="mario" alt="Mario">
-        <img src="./Data/img/pipe.png" class="pipe" alt="Pipe">
-        <img src="./Data/img/clouds.png" class="cloud cloud1" alt="Clouds">
-        <img src="./Data/img/clouds.png" class="cloud cloud2" alt="Clouds">
+        <img src="./data/images/mario.gif" class="mario" alt="Mario" role="img">
+        <img src="./data/images/pipe.png" class="pipe" alt="Obstáculo" role="img">
+        <img src="./data/images/clouds.png" class="cloud cloud1" alt="Nuvens decorativas" role="img">
+        <img src="./data/images/clouds.png" class="cloud cloud2" alt="Nuvens decorativas" role="img">
     </div>
+
+    <!-- Elementos de áudio para efeitos sonoros -->
+    <audio id="jump-sound" preload="auto">
+        <source src="./data/sounds/jump.mp3" type="audio/mpeg">
+        <source src="./data/sounds/jump.ogg" type="audio/ogg">
+    </audio>
     
+    <audio id="game-over-sound" preload="auto">
+        <source src="./data/sounds/game-over.mp3" type="audio/mpeg">
+        <source src="./data/sounds/game-over.ogg" type="audio/ogg">
+    </audio>
+
+    <audio id="score-sound" preload="auto">
+        <source src="./data/sounds/score.mp3" type="audio/mpeg">
+        <source src="./data/sounds/score.ogg" type="audio/ogg">
+    </audio>
+    
+    <script src="./data/scripts/script.js"></script>
 </body>
-<script src="./Data/Scripts/script.js"></script>
 </html>

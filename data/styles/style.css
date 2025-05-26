@@ -1,0 +1,521 @@
+@import url('https://fonts.cdnfonts.com/css/minecraft-4');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Minecraft', sans-serif;
+}
+
+/* Variáveis CSS para facilitar manutenção */
+:root {
+    --primary-red: #e52521;
+    --text-white: #ffffff;
+    --shadow-orange: orange;
+    --background-blue: linear-gradient(blue, #87CEEB, #87CEEB, #87CEEB, #E0F6FF);
+    --ground-green: green;
+    --overlay-dark: rgba(0, 0, 0, 0.9);
+    --overlay-light: rgba(0, 0, 0, 0.8);
+    --button-bg: rgba(255, 255, 255, 0.7);
+}
+
+/* Orientação e avisos */
+.orientation-warning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-dark);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: var(--text-white);
+    text-align: center;
+    padding: 20px;
+}
+
+.orientation-warning img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    animation: rotate-icon 2s ease-in-out infinite alternate;
+}
+
+/* Tela inicial */
+.start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.high-score-display {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.high-score-display p {
+    color: var(--text-white);
+    font-size: 1.5em;
+    text-shadow: 2px 2px var(--shadow-orange);
+}
+
+.start-button {
+    padding: 20px 40px;
+    font-size: 2em;
+    background: var(--primary-red);
+    color: var(--text-white);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Minecraft', sans-serif;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.start-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.start-button:active {
+    transform: scale(0.95);
+}
+
+/* Sistema de pausa */
+.pause-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-dark);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pause-content {
+    text-align: center;
+    color: var(--text-white);
+    padding: 30px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.pause-content h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px var(--shadow-orange);
+}
+
+.pause-content p {
+    font-size: 1.2em;
+    opacity: 0.8;
+}
+
+/* Botão fullscreen */
+.fullscreen-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: var(--button-bg);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.fullscreen-btn:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.fullscreen-btn img {
+    width: 100%;
+    height: 100%;
+}
+
+/* Sistema de pontuação */
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 35px;
+    color: var(--text-white);
+    z-index: 1;
+    text-shadow: 2px 2px var(--shadow-orange);
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 5px 15px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+}
+
+/* Dialog de game over */
+#game-over-dialog {
+    position: absolute;
+    max-width: 400px;
+    width: 90%;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 15px;
+    z-index: 2;
+    background-image: url('../images/brick.png'); 
+    background-size: cover;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    animation: game-over-appear 0.3s ease-out;
+}
+
+#game-over-dialog h1 {
+    color: var(--primary-red);
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px black;
+}
+
+#final-score {
+    color: black;
+    font-size: 30px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+#new-record {
+    animation: record-glow 1s ease-in-out infinite alternate;
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+#retry-button {
+    background: none;
+    border: none;
+    font-size: 30px;
+    padding: 15px;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+#retry-button:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Área do jogo */
+.game-board {
+    width: 100%;
+    height: 100vh;
+    border-bottom: 15px solid var(--ground-green);
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    background: var(--background-blue);
+}
+
+/* Mario */
+.mario {
+    height: 20vh;
+    width: auto;
+    position: absolute;
+    bottom: 0;
+    transition: filter 0.1s ease;
+    z-index: 10;
+}
+
+.mario.jump {
+    animation: jump 500ms ease-out;
+}
+
+.game-over {
+    width: auto;
+    height: 15vh;
+    margin-left: 5px;
+    filter: grayscale(100%);
+}
+
+/* Obstáculos */
+.pipe {
+    position: absolute;
+    bottom: 0;
+    height: 15vh;
+    width: auto;
+    animation: pipe-animation 1.5s infinite linear;
+    z-index: 5;
+}
+
+/* Nuvens */
+.cloud {
+    width: 40%;
+    position: absolute;
+    top: 10%;
+    opacity: 0.8;
+    z-index: 1;
+}
+
+.cloud1 {
+    animation: cloud-animation 20s linear infinite;
+}
+
+.cloud2 {
+    animation: cloud-animation 20s linear infinite;
+    animation-delay: 10s;
+    animation-fill-mode: backwards;
+}
+
+/* Animações */
+@keyframes jump {
+    0% {
+        bottom: 0;
+    }
+    40% {
+        bottom: 35vh;
+    }
+    50% {
+        bottom: 35vh;
+    }
+    60% {
+        bottom: 35vh;
+    }
+    100% {
+        bottom: 0;
+    }
+}
+
+@keyframes pipe-animation {
+    from {
+        right: -80px;
+    }
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes cloud-animation {
+    from {
+        right: -550px;
+    }
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes game-over-appear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes record-glow {
+    from {
+        text-shadow: 0 0 5px gold;
+    }
+    to {
+        text-shadow: 0 0 20px gold, 0 0 30px gold;
+    }
+}
+
+@keyframes rotate-icon {
+    from {
+        transform: rotate(-10deg);
+    }
+    to {
+        transform: rotate(10deg);
+    }
+}
+
+/* Acessibilidade - Movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+    .mario.jump {
+        animation: jump-reduced 300ms ease-out;
+    }
+    
+    .cloud1, .cloud2 {
+        animation: cloud-animation-reduced 30s linear infinite;
+    }
+    
+    .start-button:hover {
+        transform: none;
+    }
+    
+    .fullscreen-btn:hover {
+        transform: none;
+    }
+    
+    #new-record {
+        animation: none;
+        text-shadow: 0 0 10px gold;
+    }
+}
+
+@keyframes jump-reduced {
+    0% { bottom: 0; }
+    50% { bottom: 30vh; }
+    100% { bottom: 0; }
+}
+
+@keyframes cloud-animation-reduced {
+    from { right: -550px; }
+    to { right: 100%; }
+}
+
+/* Responsividade - Orientação portrait */
+@media (orientation: portrait) {
+    .orientation-warning {
+        display: flex;
+    }
+    .game-board {
+        display: none;
+    }
+}
+
+/* Responsividade - Tablets */
+@media (max-width: 768px) {
+    #score {
+        font-size: 24px;
+        top: 5px;
+        left: 5px;
+        padding: 3px 10px;
+    }
+    
+    .mario {
+        height: 15vh;
+    }
+    
+    .pipe {
+        animation: pipe-animation 2.2s infinite linear;
+    }
+    
+    .fullscreen-btn {
+        width: 35px;
+        height: 35px;
+        top: 5px;
+        right: 5px;
+    }
+    
+    #game-over-dialog {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .start-button {
+        padding: 15px 30px;
+        font-size: 1.8em;
+    }
+    
+    .high-score-display p {
+        font-size: 1.2em;
+    }
+}
+
+/* Responsividade - Smartphones */
+@media (max-width: 480px) {
+    .mario {
+        height: 12vh;
+    }
+    
+    #score {
+        font-size: 20px;
+    }
+    
+    .start-button {
+        padding: 12px 25px;
+        font-size: 1.5em;
+    }
+    
+    .high-score-display p {
+        font-size: 1em;
+    }
+    
+    #game-over-dialog h1 {
+        font-size: 2em;
+    }
+    
+    #final-score {
+        font-size: 24px;
+    }
+    
+    .pause-content h2 {
+        font-size: 2em;
+    }
+    
+    .pause-content p {
+        font-size: 1em;
+    }
+}
+
+/* Responsividade - Telas muito pequenas */
+@media (max-width: 320px) {
+    .mario {
+        height: 10vh;
+    }
+    
+    .pipe {
+        height: 12vh;
+    }
+    
+    #score {
+        font-size: 18px;
+    }
+    
+    .start-button {
+        padding: 10px 20px;
+        font-size: 1.3em;
+    }
+}
+
+/* Melhorias de performance */
+.mario, .pipe, .cloud {
+    will-change: transform;
+}
+
+.mario.jump {
+    will-change: bottom;
+}
+
+/* Focus para acessibilidade */
+.start-button:focus,
+.fullscreen-btn:focus,
+#retry-button:focus {
+    outline: 3px solid var(--shadow-orange);
+    outline-offset: 2px;
+}
+
+/* Suporte a hover apenas em dispositivos que suportam */
+@media (hover: hover) {
+    .start-button:hover,
+    .fullscreen-btn:hover,
+    #retry-button:hover {
+        /* Efeitos de hover já definidos acima */
+    }
+}
